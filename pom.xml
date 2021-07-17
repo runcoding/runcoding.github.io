@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<modelVersion>4.0.0</modelVersion>
+		<name>public</name>
+
+		<groupId>com.runcoding</groupId>
+		<artifactId>runcoding.github.io</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<packaging>pom</packaging>
+
+		<modules>
+
+		<!-- 启用project -->
+		<module>develop/back_end/java/base-java</module>
+<!--
+		<module>develop/back_end/java/rxjava</module>
+		<module>develop/back_end/java/reactor</module>
+		<module>develop/back_end/java/springboot/runcoding-restful-mybatis</module>
+		<module>develop/back_end/java/agent/runcoding-agent</module>
+		<module>develop/back_end/java/express/aviator</module>
+		<module>develop/back_end/java/springboot</module>
+		<module>develop/back_end/java/netty</module>
+		<module>develop/back_end/java/spring-cloud</module>
+		<module>develop/back_end/java/bigmap</module>
+		<module>develop/back_end/java/guava</module>
+		<module>develop/back_end/java/mq/kafka</module>
+	   <module>develop/back_end/java/spring-mvc/runcoding-shardingjdbc</module>
+-->
+	</modules>
+
+</project>

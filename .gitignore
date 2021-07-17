@@ -1,0 +1,12 @@
+target/
+*/targer/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.log
+
+logs
+/.project

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>RunningGhost的历炼</title>
+  <meta name="description" content="RunningGhost">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/main/dist/docsify/themes/vue.css">
+  <link rel="icon" type="image/png" href="/main/dist/docsify/media/favicon.ico">
+</head>
+<body>
+<div id="app">RunningGhost 正在添煤&煽火……，精彩资源正在呈现中……</div>
+<script src="/main/dist/mermaid/mermaid.js" ></script>
+<script src="main/dist/json/json-to-table.js"></script>
+<script>
+
+   var runcodingBrowse =  function (dateTime) {
+        var hrefUrl = window.location.href;
+        if(window.location.host.indexOf("localhost") >-1){
+            console.log("本地不统计");
+            return;
+        }
+        fetch('https://runcoding.herokuapp.com/github/runcoding/browse?referer=' + encodeURIComponent(hrefUrl), {
+            credentials: 'include'
+        }).then(function (response) {
+            return response.json()
+        }).then(function (json) {
+            console.log('parsed json', json);
+            if (json.code == 0) {
+                document.getElementsByClassName('run_coding_browse_' + dateTime)[0].innerHTML = json.result;
+            }
+        }).catch(function (ex) {
+            console.log('parsing failed')
+        })
+    }
+   function getQueryParam () {
+       /**获取url中"?"符后的字串*/
+       var url = location.search;
+       var theRequest = new Object();
+       if (url.indexOf("?") != -1) {
+           var str = url.substr(1);
+           var arr = str.split("&");
+           for(var i = 0; i < arr.length; i ++) {
+               var obj = arr[i].split("=");
+               theRequest[obj[0]] = decodeURIComponent(obj[1]);
+           }
+       }
+       return theRequest;
+   }
+   var  modelSidebar = getQueryParam().sidebar || null;
+   var sidebar  =  "wiki/sidebar";
+   var homepage =  "wiki/home.md";
+   if(modelSidebar){
+       sidebar   = modelSidebar + "/" + sidebar;
+       homepage  = modelSidebar + "/" + homepage;
+   }
+
+    window.$docsify = {
+        el: '#app',                //初始化的挂载元素
+        name: 'RunningGhost的历炼',//文档标题，会显示在侧边栏顶部。
+        nameLink: '/',         //点击文档标题后跳转的链接地址。{nameLink:{'/zh-cn/':'/zh-cn/','/':'/'}}
+        loadSidebar: sidebar,      //加载自定义侧边栏， loadSidebar:true时，默认加载_sidebar.md(指定加载 loadSidebar:summary.md)
+        subMaxLevel: 8,         //自定义侧边栏后默认不会再生成目录，你也可以通过设置生成目录的最大层级开启这个功能。默认subMaxLevel: 0
+        loadNavbar: false,       //加载自定义导航栏, loadNavbar: true时，默认加载 _navbar.md(或指定文件加载loadNavbar: 'nav.md')
+        maxLevel: 8,            //默认情况下会抓取文档中所有标题渲染成目录，可配置最大支持渲染的标题层级。
+        // coverpage: "cover/cover_page.md",        //开启文档封面页，默认加载 _coverpage.md 文件，可coverpage: 'cover.md'指定具体文件。
+        auto2top: true,         //切换页面后是否自动跳转到页面顶部。默认值: false
+        homepage: homepage,    //项目入口地址。默认README.md，
+        basePath: '/',    //文档加载的根路径，可以是二级路径或者是其他域名的路径。
+        repo: 'https://github.com/runcoding',               //显示gihub开源项目地址。
+        // themeColor: '#3F51B5',  //替换主题色。利用 CSS3 支持变量的特性，对于老的浏览器有 polyfill 处理。
+        autoHeader: true,//同时设置 loadSidebar 和 autoHeader 后,同时设置 loadSidebar 和 autoHeader 后，可以根据 _sidebar.md 的内容自动为每个页面增加标题。
+        executeScript: true,    //执行文档里的 script 标签里的脚本，只执行第一个 script (demo)。 如果 Vue 存在，则自动开启。
+        noEmoji: true,          //禁用 emoji 解析。禁止后不能插入表情😊
+        mergeNavbar: true,      //小屏设备下合并导航栏到侧边栏。
+        formatUpdated: '{YYYY}/{MM}/{DD} {HH}:{mm}',//显示文档更新日期
+        externalLinkTarget: '_self', // default: '_blank'
+        ga: 'UA-107590401-1',
+        markdown: {             //markdown语法
+            renderer: {
+                code: function(code, lang) {
+                  lang = lang || '';
+                  if(lang == 'json2table' || lang == 'json2tableByAlpha'){
+                    code = parseJSONCode(code);
+                    return lang == 'json2tableByAlpha' ? json2tableByAlpha(code,'') : json2table(code,'');
+                  }
+                  var html = '';
+                  if(lang.match(/^sequenceDiagram/) || lang.match(/^graph/) ||
+                            lang.match(/^gantt/) ||  lang.match(/^mermaid/) ){
+                        var cb = function(svgGraph) {
+                            //console.log(svgGraph)
+                            code = svgGraph;
+                        }
+                        try{
+                            mermaid.render('mermaid_'+new Date().getTime(),code,cb);
+                        }catch (e) {
+                            var baseCode = "#/edit/"+Base64.encodeURI(code);
+                            code = "<h5 style='color: #ffa637'>流程图设计存在语法错误。"
+                                + "<a href='https://mermaidjs.github.io/mermaid-live-editor"+baseCode
+                                    +"' target='_blank'>推荐在线语法检查</a></h5>"
+                                + code;
+                        }
+                        return '<div class="mermaid" >' + code + '</div>';
+                    }
+                    var hl = Prism.highlight(code, Prism.languages[lang] || Prism.languages.markup)
+                    return html + '<pre v-pre data-lang="' + lang + '"><code class="lang-' + lang
+                            + '">' + hl + '</code></pre>'
+                }
+            }
+        },
+        alias: {               //定义路由别名，可以更自由的定义路由规则。
+            //'/docs/changelog': '/docs/changelog'
+        },
+        search:{
+            placeholder: '文档搜索',
+            noData: '未找到结果'
+        },
+        plugins: [
+            function (hook, vm) {
+                var footer = [
+                    '<hr/>',
+                    '<footer>',
+                    '<span>本服务由<a href="https://runcoding.github.io" ' +
+                    'target="_blank">&copy; RunningGhost</a>提供支持.</span>',
+                    '</footer>'
+                ].join('');
+                hook.init(function() {
+                    // 初始化时调用，只调用一次，没有参数。
+                })
+
+                hook.beforeEach(function(md) {
+                    // 每次开始解析 Markdown 内容时调用
+                    var url = 'https://github.com/runcoding/runcoding.github.io/edit/master/wiki/zh-cn' + vm.route.file;
+                    var editUrl = '[编辑](' + url + ') ';
+                    var author = '  @[联系作者](https://runcoding.github.io)';
+                    var dateTime = new Date().getTime();
+                    var browse = '  &浏览<span class="run_coding_browse_'+dateTime+'">'+Math.floor(Math.random()*10000)+'</span>次';
+
+                    runcodingBrowse(dateTime);
+
+                    return md
+                        + '\n<br><div id="disqus_thread"></div>'
+                        + '\n\n'
+                        + '<br>最后更新 {docsify-updated} '
+                        + editUrl
+                        + author
+                        + browse  ;
+                })
+
+                hook.afterEach(function(html, next) {
+                    // 解析成 html 后调用。beforeEach 和 afterEach 支持处理异步逻辑
+                    // ...
+                    // 异步处理完成后调用 next(html) 返回结果
+                    next(html + footer)
+                })
+
+                hook.doneEach(function() {
+                    // 每次路由切换时数据全部加载完成后调用，没有参数。
+
+                })
+
+                hook.mounted(function() {
+                    // 初始化完成后调用 ，只调用一次，没有参数。
+                })
+
+                hook.ready(function() {
+
+                })
+            }
+        ]
+    }
+    if (typeof navigator.serviceWorker !== 'undefined') {
+        navigator.serviceWorker.register('/main/dist/docsify/sw.js')
+    }
+
+
+</script>
+<script src="/main/dist/zepto/zepto.min.js" ></script>
+<script src="/main/dist/docsify/docsify.js" ></script>
+<script src="/main/dist/base64.min.js" ></script>
+<!-- 增加文档查询 -->
+<script type="text/javascript" src="/main/dist/docsify/plugins/search.min.js"></script>
+<!-- 增加emoji,表情解析 -->
+<script type="text/javascript" src="/main/dist/docsify/plugins/emoji.js"></script>
+<!-- 外链脚本 - External Script 如果文档里的 script 是内联脚本，可以直接执行；而如果是外链脚本（即 js 文件内容由 src 属性引入），则需要使用此插件。 -->
+<script type="text/javascript" src="/main/dist/docsify/plugins/external-script.js"></script>
+<!-- 图片缩放 - Zoom imageMedium's 风格的图片缩放插件. 基于 zoom-image。 -->
+<script type="text/javascript" src="/main/dist/docsify/plugins/zoom-image.js"></script>
+<!-- 代码高亮.默认支持 CSS、JavaScript 和 HTML.其他扩展 -->
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-java.min.js"></script>
+<script type="text/javascript" src="/main/dist/fetch/fetch.js"></script>
+<script type="text/javascript" src="/main/dist/howler/howler.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-markdown.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-sql.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-bash.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-json.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-vim.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-http.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-nginx.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-docker.min.js"></script>
+<script type="text/javascript" src="/main/dist/docsify/plugins/prismjs/components/prism-yaml.min.js"></script>
+
+<script>
+    mermaid.initialize({
+        startOnLoad: false,
+        theme: 'forest',
+        flowchart:{
+            useMaxWidth:true,
+            htmlLabels:true
+        }
+    });
+    var parseJSONCode = function (code) {
+      try{
+        return  JSON.parse(code);
+      } catch(e) {
+        try{
+          return eval("("+ code +")");
+        }catch(e2) {
+          return [{"<span style='color: #ffa666'>请检查下面的json存在语法错误</span>":code}]
+        }
+      }
+    }
+
+
+</script>
+<!--
+<script>
+    (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://https-runcoding-github-io.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<script id="dsq-count-scr" src="//https-runcoding-github-io.disqus.com/count.js" async></script>-->
+</body>
+</html>
