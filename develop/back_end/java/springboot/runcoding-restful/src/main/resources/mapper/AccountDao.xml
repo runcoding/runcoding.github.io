@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.runcoding.dao.account.AccountDao">
+	<resultMap id="resultMap" type="com.runcoding.pojo.po.account.Account">
+		<result column="id" property="id" />
+		<result column="username" property="username" />
+		<result column="created_time" property="createdTime" />
+		<result column="updated_time" property="updatedTime" />
+		<result column="is_discarded" property="isDiscarded" />
+	</resultMap>
+	
+	<select id="findById" resultMap="resultMap">
+		SELECT
+		   username,created_time,updated_time
+		FROM account
+		WHERE id = #{id}
+	</select>
+
+	<insert id="saveByAccount" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+			account(username,created_time,updated_time)
+		VALUES
+			(#{username},#{createdTime},#{updatedTime})
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-nodeport
+spec:
+  type: NodePort
+  selector:
+    matchLabels:
+      app: influxdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      containers:
+      - name: influxdb
+        image: influxdb
+        ports:
+          - port: 8086
+            nodePort: 30000
+

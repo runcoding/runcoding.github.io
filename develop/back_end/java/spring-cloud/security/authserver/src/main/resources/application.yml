@@ -1,0 +1,27 @@
+#debug: true
+server:
+  port: 8080
+  servlet:
+    session:
+      timeout: 600 #s
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+jdbc:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql://192.200.233.63:3307/oauth2?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&autoReconnect=true&allowMultiQueries=true&tinyInt1isBit=false&useSSL=false
+  user: root
+  pass: mysql
+
+spring:
+  session: #https://docs.spring.io/spring-session/docs/current/reference/html5/guides/boot-redis.html
+    store-type: none #redis
+    redis:
+      flush-mode: IMMEDIATE #回话刷新模式
+      namespace: spring:session #
+  redis:
+    host: 192.168.1.200
+    port: 6379
+    password:
+    database: 1

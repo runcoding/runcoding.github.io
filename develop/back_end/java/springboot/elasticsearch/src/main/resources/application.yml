@@ -1,0 +1,26 @@
+## 容器
+server:
+  port: 8080 #启动端口
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  application:
+    name: RunningGhost
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  data:
+    elasticsearch:
+      cluster-name: docker-cluster
+      cluster-nodes: 192.168.43.58:9300
+      #see TransportClientFactoryBean.class
+      repositories:
+        #enabled: true
+      indexName: trade_v3  #索引名称(可以支持版本)
+
+logging:
+       level:
+             org.springframework.data: DEBUG

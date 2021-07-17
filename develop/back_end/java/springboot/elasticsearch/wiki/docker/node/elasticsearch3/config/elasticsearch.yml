@@ -1,0 +1,30 @@
+# 数据节点(没有机会成为主节点)`data node` node.master=false,node.data=true
+# 【node.master: false node.data: true node.ingest:false】，这些节点只负责存储数据，
+# 后期提供建立索引和查询索引的服务，这样的话如果用户请求比较频繁，这些节点的压力也会比较大
+# 主要消耗磁盘，内存
+cluster.name: "docker-cluster"
+cluster.routing.allocation.disk.threshold_enabled: false
+network.bind_host: 0.0.0.0
+node.name: elasticsearch3
+node.master: true
+node.data: true
+node.ingest: true
+
+network.host: 192.168.43.58
+#network.host: elasticsearch3
+http.port: 9203
+transport.tcp.port: 9303
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+discovery.zen.ping.unicast.hosts: ["192.168.43.58:9300","192.168.43.58:9302","192.168.43.58:9303"] #集群的ip集合，可指定端口，默认为9300，如 ["192.168.1.101","192.168.1.102"]
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping_timeout: 5s
+
+bootstrap.memory_lock: true
+action.destructive_requires_name: true
+
+xpack.security.enabled: false
+# minimum_master_nodes need to be explicitly set when bound on a public IP
+# set to 1 to allow single node clusters
+# Details: https://github.com/elastic/elasticsearch/pull/17288 

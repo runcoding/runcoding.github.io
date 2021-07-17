@@ -1,0 +1,99 @@
+#http://cloud.spring.io/spring-cloud-static/Greenwich.SR1/single/spring-cloud.html
+#debug: true
+server:
+  port: 9898
+
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: after_route #根据时区，设置可访问的时间段 https://www.zeitverschiebung.net/cn/city/1796236
+          uri: http://www.baidu.com/ #curl "http://localhost:9898/s?wd=java"
+          predicates:
+            - Path=/s
+            - Query=wd
+            #- RemoteAddr=192.168.1.1/24 #配置ip地址段(RemoteAddr=192.168.1.1/24)
+            - After=2018-03-25T17:42:47.789-07:00[Asia/Shanghai]  #在2018-03-25 之后才能访问
+            - Before=2020-01-20T17:42:47.789-07:00[Asia/Shanghai] #在2020-01-20 之前才能访问
+            - Between=2018-03-25T17:42:47.789-07:00[Asia/Shanghai], 2020-01-20T17:42:47.789-07:00[Asia/Shanghai] #之间
+        - id: method_route #方法请求 curl http://localhost:9898/groups/web/
+          uri: http://openjdk.java.net/
+          predicates:
+            #- Host=*.retry.com
+            - Method=GET
+            - Path=/groups/web
+        - id: host_route  #占位符路由 curl http://localhost:9898/runcoding/runcoding.github.io
+          uri: https://github.com/
+          predicates:
+            - Path=/runcoding/{segment},/code/{segment} #http://localhost:9898/runcoding/runcoding.github.io to https://github.com/runcoding/runcoding.github.io
+        - id: prefixpath_route #url 添加path
+          uri: https://github.com/
+          filters:
+            - PrefixPath=/monero-project
+          predicates:
+            - Path=/monero #  http://localhost:9898/monero  to https://github.com/monero-project/monero
+        - id: stripPrefix_route #去掉指点数量的path
+          uri: https://github.com/
+          predicates:
+            - Path=/strip/prefix/monero-project/monero
+          filters:
+            - StripPrefix=2 # http://localhost:9898/strip/prefix/monero-project/monero  to https://github.com/monero-project/monero
+        - id: redirect_route # 302 跳转
+          uri: http://www.baidu.com/
+          predicates:
+            - Path=/redirect
+          filters:
+            - RedirectTo=302, https://www.google.com/
+        - id: rewritepath_route #curl "http://localhost:9898/rewrite/s?wd=java"  url 重写
+          uri: http://www.baidu.com/
+          predicates:
+            - Path=/rewrite/**
+          filters:
+            - RewritePath=/rewrite/(?<segment>.*), /$\{segment}
+            # /42?user=ford&password=omg!what&flag=true to /42?user=ford&password=***&flag=true
+            #- RewriteResponseHeader=X-Response-Foo, , password=[^&]+, password=***
+            #- SaveSession
+        - id: setpath_route  #curl "http://localhost:9898/setpath/s?wd=java"  url被重写
+          uri: http://www.baidu.com/
+          predicates:
+            - Path=/setpath/{segment}
+          filters:
+            - SetPath=/{segment}
+        - id: add_request_header_route #添加请求头 curl --header "X-Request-Foo:Bar" http://localhost:9898/header_route
+          uri: http://www.baidu.com/  #存在问题
+          predicates:
+            - Path=/header_route
+          filters:
+            - AddRequestHeader=X-Request-Foo, Bar
+            #- RemoveRequestHeader=X-Request-Foo #移除反向代理请求头数据
+            #- SetResponseHeader=X-Response-Foo, Bar #设置或替换相应头数据
+            #- SetStatus=401 #设置相应码（401/BAD_REQUEST）
+        - id: retry_test   #重试
+          uri: http://www.baidu.com/
+          predicates:
+            - Host=/flakey
+          filters:
+            - name: Retry
+              args:
+                retries: 3 #重试3次
+                statuses: BAD_GATEWAY #出现重试时的状态码
+            - name: RequestSize #限制请求数据大小
+              args:
+                maxSize: 5000000 #5.0 MB
+        - id: cookie_route #根据cookie，路由
+          order: 8999 # 越小越优先
+          uri: https://github.com/ #curl --cookie "running=ch.p"  http://localhost:9898/cookie_route
+          predicates:
+            - Path=/cookie_route
+            - Cookie=running, ch.p # reg 配置值"ch.p"
+      default-filters: #全局过滤器
+        - AddResponseHeader=X-Response-Default-Foo, Default-Bar
+        - PrefixPath=/httpbin
+      filter:
+        secure-headers:
+          - Content-Security-Policy: "default-src 'self' https:; font-src 'self' https: data:; img-src 'self' https: data:; object-src 'none'; script-src https:; style-src 'self' https: 'unsafe-inline'"
+

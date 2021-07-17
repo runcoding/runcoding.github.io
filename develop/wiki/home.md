@@ -1,0 +1,31 @@
+## 基础技能
+```json2table
+[
+ {
+   "技术":"Java技术",
+   "简述":[
+     "[Java]({{baseDomain}}?sidebar=develop/back_end/java#/develop/back_end/java/wiki/home)" 
+   ] 
+ },
+ {
+   "技术":"容器技术",
+   "简述":[
+     "[Docker]({{baseDomain}}?sidebar=develop/cloud/docker)",
+     "[kubernetes]({{baseDomain}}?sidebar=develop/cloud/kubernetes)"
+   ] 
+ },
+ {
+   "技术":"网络技术",
+   "简述":[
+     "[网络分析](/develop/wiki/information/network/wireshark)",
+     "[计数机网络](/develop/wiki/information/network/web)" 
+   ] 
+ },
+ {
+   "技术":"大数据技术",
+   "简述":[
+     "[大数据]({{baseDomain}}?sidebar=develop/back_end/massive_data)" 
+   ] 
+ },
+]
+``` 

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-hostnetwork
+spec:
+  selector:
+    matchLabels:
+      app: influxdb
+  replicas: 1 # 一副本
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      hostNetwork: true
+      containers:
+      - name: influxdb
+        image: influxdb
+

@@ -1,0 +1,14 @@
+## 容器
+server:
+    port: 8888 #启动端口
+    servlet: 
+          context-path: /
+
+spring:
+  profile:
+    active: dev
+
+
+logging:
+       level:
+             org.springframework.data: DEBUG

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-hostport
+spec:
+  selector:
+    matchLabels:
+      app: influxdb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: influxdb
+    spec:
+      containers:
+      - name: influxdb
+        image: influxdb
+        ports:
+        - containerPort: 8086  #容器端口
+          hostPort: 8087       #暴露属主机端口
+

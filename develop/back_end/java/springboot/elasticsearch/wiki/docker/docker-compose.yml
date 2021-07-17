@@ -1,0 +1,85 @@
+#docker-compose up -d
+version: '2.2'
+services:
+  elasticsearch:
+    image: elasticsearch:6.4.3
+    container_name: elasticsearch
+    environment:
+      - ES_CLUSTERNAME=elasticsearch
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Xss50m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - ./node/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      #- ./node/elasticsearch/config/analysis-ik:/usr/share/elasticsearch/config/analysis-ik:rw
+      - ./node/elasticsearch/config/jvm.options:/usr/share/elasticsearch/config/jvm.options
+      - ./node/elasticsearch/data:/usr/share/elasticsearch/data
+    command: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - esnet
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    container_name: elasticsearch2
+    environment:
+      - ES_CLUSTERNAME=elasticsearch2
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./node/elasticsearch2/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./node/elasticsearch/config/analysis-ik/IKAnalyzer.cfg.xml:/usr/share/elasticsearch/config/analysis-ik/IKAnalyzer.cfg.xml:ro
+      #- ./node/elasticsearch2/jvm.options:/usr/share/elasticsearch/config/jvm.options
+      - ./node/elasticsearch2/data:/usr/share/elasticsearch/data
+    command: elasticsearch
+    ports:
+      - 9202:9202
+      - 9302:9302
+    networks:
+      - esnet
+    links:
+      - elasticsearch:elasticsearch
+  elasticsearch3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    container_name: elasticsearch3
+    environment:
+      - ES_CLUSTERNAME=elasticsearch3
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - 9203:9203
+      - 9303:9303
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./node/elasticsearch3/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./node/elasticsearch/config/analysis-ik/IKAnalyzer.cfg.xml:/usr/share/elasticsearch/config/analysis-ik/IKAnalyzer.cfg.xml:ro
+      #- ./node/elasticsearch3/jvm.options:/usr/share/elasticsearch/config/jvm.options
+      - ./node/elasticsearch3/data:/usr/share/elasticsearch/data
+    command: elasticsearch
+    networks:
+      - esnet
+    links:
+      - elasticsearch:elasticsearch
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+  esdata3:
+    driver: local
+networks:
+  esnet:

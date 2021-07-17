@@ -1,0 +1,29 @@
+#`client node` node.master=true,node.data=false 用于转发请求，起到平衡负载的作用
+# ingest 节点也称之为 client 节点【node.master: false node.data: false node.ingest:true】，这些节点只负责处理用户请求，实现请求转发，负载均衡等功能。
+# client | ingest  节点：普通服务器即可(如果要进行分组聚合操作的话，建议这个节点内存也分配多一点)
+cluster.name: "docker-cluster"
+cluster.routing.allocation.disk.threshold_enabled: false
+network.bind_host: 0.0.0.0
+node.name: elasticsearch2
+node.master: true
+node.data: true
+node.ingest: true
+
+#network.host: elasticsearch2
+network.host: 192.168.43.58
+http.port: 9202
+transport.tcp.port: 9302
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+discovery.zen.ping.unicast.hosts: ["192.168.43.58:9300","192.168.43.58:9302","192.168.43.58:9303"] #集群的ip集合，可指定端口，默认为9300，如 ["192.168.1.101","192.168.1.102"]
+discovery.zen.minimum_master_nodes: 2
+discovery.zen.ping_timeout: 5s
+
+bootstrap.memory_lock: true
+action.destructive_requires_name: true
+
+xpack.security.enabled: false
+# minimum_master_nodes need to be explicitly set when bound on a public IP
+# set to 1 to allow single node clusters
+# Details: https://github.com/elastic/elasticsearch/pull/17288 

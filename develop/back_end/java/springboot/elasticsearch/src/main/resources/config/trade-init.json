@@ -1,0 +1,220 @@
+[
+  {
+    "createTime": "2019-06-24 14:00:00",
+    "location": {
+      "lat": 29.795295,
+      "lon": 121.614758
+    },
+    "totalRealAmount": 150,
+    "tradeId": 41686654,
+    "tradeName": "中国浙江省宁波市交易",
+    "tradeOrders": [
+      {
+        "createTime": "2019-06-24 14:00:00",
+        "freightAmount": 0.74,
+        "orderDetails": [
+          {
+            "freightAmount": 0,
+            "orderNumber": "77290779",
+            "productSalePrice": 200,
+            "productSkuCode": "yj001",
+            "productSkuId": 66,
+            "productSkuName": "眼镜",
+            "promotionAmount": 50,
+            "qty": 1,
+            "realAmount": 150
+          }
+        ],
+        "orderNumber": "77290779",
+        "orderStatus": 0,
+        "promotionAmount": 50,
+        "realAmount": 150,
+        "totalAmount": 200,
+        "tradeNumber": "41543737"
+      }
+    ],
+    "tradeStatus": 0,
+    "tradeTypeId": 1,
+    "userId": 100,
+    "userName": "小王"
+  },
+  {
+    "createTime": "2019-05-30 14:00:00",
+    "location": {
+      "lat": 29.795295,
+      "lon": 121.614758
+    },
+    "totalRealAmount": 110,
+    "tradeId": 73397103,
+    "tradeName": "中国浙江省宁波市交易",
+    "tradeOrders": [
+      {
+        "createTime": "2019-05-30 14:00:00",
+        "freightAmount": 10,
+        "orderDetails": [
+          {
+            "freightAmount": 1.42,
+            "orderNumber": "42457423",
+            "productSalePrice": 100,
+            "productSkuCode": "xfs001",
+            "productSkuId": 88,
+            "productSkuName": "洗发水",
+            "promotionAmount": 0,
+            "qty": 1,
+            "realAmount": 100
+          }
+        ],
+        "orderNumber": "42457423",
+        "orderStatus": 0,
+        "promotionAmount": 0,
+        "realAmount": 100,
+        "totalAmount": 100,
+        "tradeNumber": "86667629"
+      }
+    ],
+    "tradeStatus": 0,
+    "tradeTypeId": 1,
+    "userId": 100,
+    "userName": "小王"
+  },
+  {
+    "createTime": "2019-06-20 14:00:00",
+    "location": {
+      "lat": 31.233868,
+      "lon": 121.449963
+    },
+    "totalRealAmount": 200,
+    "tradeId": 25686849,
+    "tradeName": "中国上海市交易",
+    "tradeOrders": [
+      {
+        "createTime": "2019-06-20 14:00:00",
+        "freightAmount": 0,
+        "orderDetails": [
+          {
+            "freightAmount": 0,
+            "orderNumber": "40312288",
+            "productSalePrice": 25,
+            "productSkuCode": "xg001",
+            "productSkuId": 100,
+            "productSkuName": "西瓜",
+            "promotionAmount": 0,
+            "qty": 2,
+            "realAmount": 50
+          }
+        ],
+        "orderNumber": "40312288",
+        "orderStatus": 0,
+        "promotionAmount": 0,
+        "realAmount": 50,
+        "totalAmount": 50,
+        "tradeNumber": "56197082"
+      },
+      {
+        "createTime": "2019-06-20 14:00:00",
+        "freightAmount": 0,
+        "orderDetails": [
+          {
+            "freightAmount": 0,
+            "orderNumber": "40312289",
+            "productSalePrice": 150,
+            "productSkuCode": "kz001",
+            "productSkuId": 99,
+            "productSkuName": "裤子",
+            "promotionAmount": 0,
+            "qty": 1,
+            "realAmount": 150
+          }
+        ],
+        "orderNumber": "40312289",
+        "orderStatus": 0,
+        "promotionAmount": 0,
+        "realAmount": 150,
+        "totalAmount": 150,
+        "tradeNumber": "56197082"
+      }
+    ],
+    "tradeStatus": 0,
+    "tradeTypeId": 1,
+    "userId": 101,
+    "userName": "小徐"
+  },
+  {
+    "createTime": "2019-06-10 14:35:10",
+    "location": {
+      "lat": 32.061557,
+      "lon": 118.758312
+    },
+    "totalRealAmount": 51.32,
+    "tradeId": 5935189,
+    "tradeName": "中国江苏省南京市交易",
+    "tradeOrders": [
+      {
+        "createTime": "2019-06-10 14:35:10",
+        "freightAmount": 0,
+        "orderDetails": [
+          {
+            "freightAmount": 1.04,
+            "orderNumber": "8136968",
+            "productSalePrice": 50,
+            "productSkuCode": "xg001",
+            "productSkuId": 100,
+            "productSkuName": "西瓜",
+            "promotionAmount": 0,
+            "qty": 1,
+            "realAmount": 1
+          }
+        ],
+        "orderNumber": "8136968",
+        "orderStatus": 0,
+        "promotionAmount": 0,
+        "realAmount": 50,
+        "totalAmount": 50,
+        "tradeNumber": "59072039"
+      }
+    ],
+    "tradeStatus": 0,
+    "tradeTypeId": 1,
+    "userId": 102,
+    "userName": "小李"
+  },
+  {
+    "createTime": "2019-06-24 14:35:10",
+    "location": {
+      "lat": 30.2756,
+      "lon": 120.197521
+    },
+    "totalRealAmount": 6.71,
+    "tradeId": 66508242,
+    "tradeName": "浙江省杭州市交易",
+    "tradeOrders": [
+      {
+        "createTime": "2019-06-24 14:35:10",
+        "freightAmount": 1.62,
+        "orderDetails": [
+          {
+            "freightAmount": 0.15,
+            "orderNumber": "72018693",
+            "productSalePrice": 6.71,
+            "productSkuCode": "wz001",
+            "productSkuId": 33,
+            "productSkuName": "袜子",
+            "promotionAmount": 0,
+            "qty": 1,
+            "realAmount": 6.71
+          }
+        ],
+        "orderNumber": "17764656",
+        "orderStatus": 0,
+        "promotionAmount": 0,
+        "realAmount": 0,
+        "totalAmount": 6.71,
+        "tradeNumber": "95825740"
+      }
+    ],
+    "tradeStatus": 0,
+    "tradeTypeId": 1,
+    "userId": 103,
+    "userName": "小魏"
+  }
+]

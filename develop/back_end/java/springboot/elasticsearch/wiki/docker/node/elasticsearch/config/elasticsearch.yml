@@ -1,0 +1,31 @@
+# 集群https://www.jianshu.com/p/149a8da90bbc | https://www.cnblogs.com/liang1101/p/7284205.html
+# master 主节点集群中用于元数据(metadata)的请求处理，比如确定分片位置，索引的新增、删除请求分配等
+# 建议集群中设置 3台 以上的节点作为 master 节点【node.master: true node.data: false node.ingest:false】，这些节点只负责成为主节点，维护整个集群的状态。
+# master节点：普通服务器即可(CPU 内存 消耗一般)
+cluster.name: "docker-cluster"
+cluster.routing.allocation.disk.threshold_enabled: false
+network.bind_host: 0.0.0.0
+node.name: elasticsearch
+node.master: true
+node.data: true #是否处理数据
+node.ingest: true #用于预处理数据（索引和搜索阶段都可以用到)
+
+#path.data: #默认数据路径，可用逗号分隔多个路径
+#path.logs: 默认日志路径
+
+#bootstrap.mlockall: #内存锁，选项为true或false，用来确保用户在es-jvm中设置的ES_HEAP_SIZE参数内存可以使用一半以上而又不溢出
+
+network.host: 192.168.43.58 #对外暴露的host，0.0.0.0时暴露给外网
+http.port: 9200
+transport.tcp.port: 9300
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+#discovery.zen.minimum_master_nodes: 2 #最少的主节点个数，为了防止脑裂，最好设置为(总结点数/2 + 1)个
+#discovery.zen.ping.unicast.hosts: ["192.168.43.58:9300","192.168.43.58:9302","192.168.43.58:9303"] #集群的ip集合，可指定端口，默认为9300，如 ["192.168.1.101","192.168.1.102"]
+#discovery.zen.ping_timeout: 5s #主节点选举超时时间设置
+
+bootstrap.memory_lock: false #内存锁定检查
+gateway.recover_after_nodes: 1 #值为n，网关控制在n个节点启动之后才恢复整个集群
+xpack.security.enabled: false
+

@@ -1,0 +1,41 @@
+#debug: true
+server:
+  port: 9999
+  servlet:
+    session:
+      cookie:
+        name: OAUTH2SESSION
+
+spring:
+  profiles: default
+
+management:
+  security:
+    role: HERO
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.netflix.discovery: 'OFF'
+
+security:
+  basic:
+    sevlert:
+      enabled: false
+  oauth2:
+    sso:
+      loginPath: /dashboard/login
+    client:
+      clientId: fooClientIdPassword
+      clientSecret: secret
+      accessTokenUri: http://localhost:8080/oauth/token #是获取访问令牌的URL
+      userAuthorizationUri: http://localhost:8080/oauth/authorize #授权用户被重定向的目标URL
+      redirectUriTemplate:
+      clientAuthenticationScheme: form
+      scope: openid #autoapprove 自动授权
+      use-current-uri: false #此处特别重要一定要配置，否则不会生效，配置了自定义的回调地址就必须将默认的回调禁止，原因不做过多说明
+    resource:
+      userInfoUri: http://localhost:8080/user/me
+      preferTokenInfo: false
+      jwt:
+        key-value:

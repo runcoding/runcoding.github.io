@@ -1,0 +1,38 @@
+# https://time.geekbang.org/column/article/40366
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  nodeSelector: #是一个供用户将 Pod 与 Node 进行绑定的字段
+    disktype: ssd #永远只能运行在携带了“disktype: ssd”标签（Label）的节点上；否则，它将调度失败。
+
+  hostAliases:  #定义了 Pod 的 hosts 文件（比如 /etc/hosts）里的内容
+  - ip: "10.1.2.3"
+    hostnames:
+    - "foo.remote"
+    - "bar.remote"
+
+
+  shareProcessNamespace: true # 这个 Pod 里的容器要共享 PID Namespace。
+  containers:
+  - name: nginx
+    image: nginx
+  - name: shell
+    image: busybox
+    stdin: true
+    tty: true
+
+  containers:
+  - name: lifecycle-demo-container
+    image: nginx
+    lifecycle: #是在容器状态发生变化时触发一系列“钩子”
+      postStart: #在容器启动后，立刻执行一个指定的操作。
+      #需要明确的是，postStart 定义的操作，虽然是在 Docker 容器 ENTRYPOINT 执行之后，但它并不严格保证顺序。
+      #也就是说，在 postStart 启动时，ENTRYPOINT 有可能还没有结束。
+        exec:
+          command: ["/bin/sh", "-c", "echo Hello from the postStart handler > /usr/share/message"]
+      preStop: #容器被杀死之前（比如，收到了 SIGKILL 信号）。而需要明确的是，preStop 操作的执行，是同步的。
+      #所以，它会阻塞当前的容器杀死流程，直到这个 Hook 定义操作完成之后，才允许容器被杀死
+        exec:
+          command: ["/usr/sbin/nginx","-s","quit"]

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.runcoding</groupId>
+        <artifactId>runcoding.github.io</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../../..</relativePath>
+    </parent>
+
+    <groupId>com.runcoding</groupId>
+    <artifactId>springboot</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <modules>
+       <!-- <module>jax-rs2-guide</module>
+        <module>runcoding-restful</module>
+        <module>runcoding-restful-mybatis</module>
+        <module>elasticsearch</module>-->
+        <module>seata/tcc/tcc-order</module>
+        <module>seata/tcc/tcc-storage</module>
+        <!--<module>nacos/runcoding-nacos</module>-->
+    </modules>
+    
+</project>
